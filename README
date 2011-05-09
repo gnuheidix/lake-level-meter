@@ -1,0 +1,3 @@
+This little script extracts the current water level of the lake constance from an external website and displays the information in a more convenient way.
+
+Target: The script generates an SVG picture which shall be designed like http://www.wissen.de/wde/generator/wissen/ressorts/technik/mobilitaet/index,page=3617624,chunk=img_0.html 
