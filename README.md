@@ -2,4 +2,4 @@ This little script extracts the current water level of the lake constance from t
 
 The script generates a SVG picture which displays the current water level like a fuel gauge of a car.
 
-<img src="https://github.com/downloads/gnuheidix/lake-level-meter/preview.svg" alt="Preview"/>
+<img src="https://github.com/downloads/gnuheidix/lake-level-meter/preview_20110510.svg" alt="Preview"/>
