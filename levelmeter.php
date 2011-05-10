@@ -11,16 +11,12 @@
 // dimension initialization
 settype ($width, 'integer');
 $width = 400;
-settype ($height, 'integer');
-$height = 400;
 
 // set dimension if configured
-if(isset($_GET['width']) && isset($_GET['height'])) {
+if(isset($_GET['width'])) {
     $paramW = $_GET['width'];
-    $paramH = $_GET['height'];
-    if ($paramW > 0 && $paramH > 0) {
+    if ($paramW > 0) {
         $width = $paramW;
-        $height = $paramH;
     }
 }
 
@@ -32,15 +28,15 @@ echo "<?xml version=\"1.0\" encoding=\"iso-8859-1\" ?> \n";
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" 
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="<?php echo $width ;?>px" 
-height="<?php echo $height ;?>px" 
-viewBox="0 0 1000 1000" 
+height="<?php echo $width/2.4 ;?>px" 
+viewBox="0 0 1000 415" 
 preserveAspectRatio="none" 
 xmlns="http://www.w3.org/2000/svg" 
 version="1.1"
 xml:lang="de">
   <title>lake-level-meter</title>
   <rect fill="black" x="0" y="0" 
-  width="1000" height="402"/>
+  width="1000" height="415"/>
     
 <?php
 echo "<g transform=\"translate(500,500)\" 
@@ -49,7 +45,6 @@ echo "<g transform=\"translate(500,500)\"
 // draw small pitch lines
 $maxr=480;
 $minr=440;
-
 for ($i = 34; $i <= 56; $i++) {
     $alpha=(M_PI/30.0)*$i;
 
@@ -58,13 +53,18 @@ for ($i = 34; $i <= 56; $i++) {
     $x2=round($minr*cos($alpha));
     $y2=round($minr*sin($alpha));
 
-    echo "<line stroke=\"rgb(255,255,255)\" x1=\"$x1\" y1=\"$y1\" x2=\"$x2\" y2=\"$y2\" /> \n";
+    echo "<line stroke=\"rgb(";
+    if($i < 37){
+        echo "255,0,0";
+    }else{
+        echo "130,255,130";
+    }
+    echo ")\" x1=\"$x1\" y1=\"$y1\" x2=\"$x2\" y2=\"$y2\" /> \n";
 }
 
 // draw big pitch lines
 $maxr=490;
 $minr=420;
-
 for ($i = 7; $i <= 11; $i++) {
     $alpha=(M_PI/6.0)*$i;
 
@@ -72,7 +72,13 @@ for ($i = 7; $i <= 11; $i++) {
     $y1=round($maxr*sin($alpha));
     $x2=round($minr*cos($alpha));
     $y2=round($minr*sin($alpha));
-    echo "<line stroke=\"rgb(255,255,255)\" x1=\"$x1\" y1=\"$y1\" x2=\"$x2\" y2=\"$y2\" stroke-width=\"16\"/> \n";
+    echo "<line stroke=\"rgb(";
+    if($i != 7){
+        echo "255,255,255";
+    }else{
+        echo "255,0,0";
+    }
+    echo ")\" x1=\"$x1\" y1=\"$y1\" x2=\"$x2\" y2=\"$y2\" stroke-width=\"16\"/> \n";
 }
 
 // draw text
