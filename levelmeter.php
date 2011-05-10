@@ -8,6 +8,31 @@
  *
 */
 
+/**
+  * queries the xpath of a DOMDocument by using DOMXPath - only for single items
+  * @param $xpath a DOMXPath instance
+  * @param $query a xpath query string
+  * @returns the result of the query as string -- "" in case the query fails
+**/
+function xpathQuery($xpath, $query){
+    $entry = $xpath->query($query);
+    return $entry->length == 1 ? $entry->item(0)->nodeValue : "";
+}
+
+// constants for the queries
+$url   = 'http://www.pegelonline.wsv.de/gast/stammdaten?pegelnr=0906';
+$queryLevel = '/html/body/div/div[7]/table[2]/tr[3]/td[2]';
+$queryTime  = '/html/body/div/div[7]/table[2]/tr[3]/td[3]';
+
+// get the website
+$doc = new DOMDocument();
+$doc->loadHtmlFile($url);
+
+// extract the data
+$xpath = new DOMXPath($doc);
+$level = xpathQuery($xpath, $queryLevel);
+$date = "Stand vom: ".xpathQuery($xpath, $queryTime);
+
 // dimension initialization
 settype ($width, 'integer');
 $width = 400;
@@ -27,31 +52,31 @@ echo "<?xml version=\"1.0\" encoding=\"iso-8859-1\" ?> \n";
 
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" 
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="<?php echo $width ;?>px" 
-height="<?php echo $width/2.4 ;?>px" 
+<svg width="<?php echo $width; ?>px" 
+height="<?php echo $width/2.4; ?>px" 
 viewBox="0 0 1000 415" 
 preserveAspectRatio="none" 
 xmlns="http://www.w3.org/2000/svg" 
 version="1.1"
-xml:lang="de">
+xml:lang="de" tooltip="enable">
   <title>lake-level-meter</title>
   <rect fill="black" x="0" y="0" 
-  width="1000" height="415"/>
+  width="1000" height="415" title="<?php echo $date; ?>"/>
     
 <?php
-echo "<g transform=\"translate(500,500)\" 
- stroke-width=\"10\"> \n";
+echo  "<g transform=\"translate(500,500)\" stroke-width=\"10\"> \n"
+     ."<title>{$date}</title>";
 
 // draw small pitch lines
-$maxr=480;
-$minr=440;
-for ($i = 34; $i <= 56; $i++) {
-    $alpha=(M_PI/30.0)*$i;
+$maxr = 480;
+$minr = 440;
+for ($i = 34; $i <= 56; ++$i) {
+    $alpha = (M_PI / 30.0) * $i;
 
-    $x1=round($maxr*cos($alpha));
-    $y1=round($maxr*sin($alpha));
-    $x2=round($minr*cos($alpha));
-    $y2=round($minr*sin($alpha));
+    $x1 = round($maxr * cos($alpha));
+    $y1 = round($maxr * sin($alpha));
+    $x2 = round($minr * cos($alpha));
+    $y2 = round($minr * sin($alpha));
 
     echo "<line stroke=\"rgb(";
     if($i < 37){
@@ -63,15 +88,15 @@ for ($i = 34; $i <= 56; $i++) {
 }
 
 // draw big pitch lines
-$maxr=490;
-$minr=420;
-for ($i = 7; $i <= 11; $i++) {
-    $alpha=(M_PI/6.0)*$i;
+$maxr = 490;
+$minr = 420;
+for ($i = 7; $i <= 11; ++$i) {
+    $alpha = (M_PI / 6.0) * $i;
 
-    $x1=round($maxr*cos($alpha));
-    $y1=round($maxr*sin($alpha));
-    $x2=round($minr*cos($alpha));
-    $y2=round($minr*sin($alpha));
+    $x1 = round($maxr * cos($alpha));
+    $y1 = round($maxr * sin($alpha));
+    $x2 = round($minr * cos($alpha));
+    $y2 = round($minr * sin($alpha));
     echo "<line stroke=\"rgb(";
     if($i != 7){
         echo "255,255,255";
@@ -83,26 +108,42 @@ for ($i = 7; $i <= 11; $i++) {
 
 // draw text
 ?>
-<text x="300" y="-110" font-size="100" 
-fill="white" font-family="Helvetica, sans-serif">F</text>
-<text x="-350" y="-110" font-size="100" 
-fill="red" font-family="Helvetica, sans-serif">E</text>
-<text x="-199" y="-110" font-size="100" 
-fill="white" font-family="Helvetica, sans-serif">280,30 m</text>
+<text x="300"
+      y="-110"
+      font-size="100" 
+      fill="white"
+      font-family="Helvetica, sans-serif">
+    F
+</text>
+<text x="-350"
+      y="-110"
+      font-size="100" 
+      fill="red"
+      font-family="Helvetica, sans-serif">
+    E
+</text>
+<text text-anchor="middle" 
+      dominant-baseline="mathematical"
+      y="-110"
+      font-size="100" 
+      fill="white"
+      font-family="Helvetica, sans-serif">
+    <?php echo $level." m"; ?>
+</text>
 
 <?php
-// draw needle
+// draw needle (E:210 -- F:330)
 echo "<g><animateTransform 
 attributeName=\"transform\" 
 attributeType=\"XML\" 
 type=\"rotate\" 
 from=\"210\" 
-to=\"250\" 
+to=\"245\" 
 dur=\"1s\" 
 repeatCount=\"0\" 
 additive=\"replace\" 
 fill=\"freeze\" /> \n";
-echo "<line stroke-width=\"20\" stroke=\"rgb(255,255,255)\" x1=\"300\" y1=\"0\" 
+echo "<line stroke-width=\"20\" stroke=\"rgb(255,255,255)\" x1=\"280\" y1=\"0\" 
 x2=\"420\" y2=\"0\" /> \n";
 echo  "</g> \n\n"
      ."</g> \n"
