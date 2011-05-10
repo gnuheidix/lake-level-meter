@@ -1,10 +1,18 @@
 <?php
 /*
- * a simple water level meter
+ * a simple water level meter for the lake constance
  * 
- * 05/2011 Thomas Heidrich
- * based on the work of Dr. O. Hoffmann
+ * made by Thomas Heidrich - May 2011
+ *
+ * SVG based on the work of Dr. O. Hoffmann
  *     see http://hoffmann.bplaced.net/hilfe.php?me=svg2&in=svguhr&stil=_
+ *
+ * Usage: Simply run the script and hope that pegelonline.wsv.de is online. ;-)
+ * Param: The parameter width can be set in order to manipulate the size of the
+ *        water level meter
+ * Example: http://localhost/levelmeter.php?width=200
+ *
+ * License: CC-BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/de/
  *
 */
 
@@ -23,6 +31,8 @@ function xpathQuery($xpath, $query){
 $url   = 'http://www.pegelonline.wsv.de/gast/stammdaten?pegelnr=0906';
 $queryLevel = '/html/body/div/div[7]/table[2]/tr[3]/td[2]';
 $queryTime  = '/html/body/div/div[7]/table[2]/tr[3]/td[3]';
+$queryMNW = '/html/body/div/div[7]/table[3]/tr[2]/td[2]';
+$queryMW = '/html/body/div/div[7]/table[3]/tr[3]/td[2]';
 
 // get the website
 $doc = new DOMDocument();
@@ -30,8 +40,20 @@ $doc->loadHtmlFile($url);
 
 // extract the data
 $xpath = new DOMXPath($doc);
-$level = xpathQuery($xpath, $queryLevel);
+$level = floatval(str_replace(",", ".", xpathQuery($xpath, $queryLevel)));
+$mnw = floatval(str_replace(",", ".", xpathQuery($xpath, $queryMNW)));
+$mw = floatval(str_replace(",", ".", xpathQuery($xpath, $queryMW)));
 $date = "Stand vom: ".xpathQuery($xpath, $queryTime);
+
+/* calculate needle position
+ * needle: min. 210 -- mid. 270 -- max. 330
+ * level: min. 250 (MNW) -- mid. 341 (MW)
+ * two point function http://www.tutorvista.com/math/two-point-function
+ * example: needlePos = 210 + (270 - 210) / (341 - 250) * (level - 250)
+*/
+$needleMin = 210;
+$needleMid = 270;
+$needlePos = $needleMin + ($needleMid - $needleMin) / ($mw - $mnw) * ($level - $mnw);
 
 // dimension initialization
 settype ($width, 'integer');
@@ -49,7 +71,6 @@ if(isset($_GET['width'])) {
 header("Content-type: image/svg+xml");
 echo "<?xml version=\"1.0\" encoding=\"iso-8859-1\" ?> \n";
 ?>
-
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" 
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="<?php echo $width; ?>px" 
@@ -62,8 +83,9 @@ xml:lang="de" tooltip="enable">
   <title>lake-level-meter</title>
   <rect fill="black" x="0" y="0" 
   width="1000" height="415" title="<?php echo $date; ?>"/>
-    
+
 <?php
+// draw scale
 echo  "<g transform=\"translate(500,500)\" stroke-width=\"10\"> \n"
      ."<title>{$date}</title>";
 
@@ -79,7 +101,7 @@ for ($i = 34; $i <= 56; ++$i) {
     $y2 = round($minr * sin($alpha));
 
     echo "<line stroke=\"rgb(";
-    if($i < 37){
+    if($i < 37 || $i > 53){
         echo "255,0,0";
     }else{
         echo "130,255,130";
@@ -98,7 +120,7 @@ for ($i = 7; $i <= 11; ++$i) {
     $x2 = round($minr * cos($alpha));
     $y2 = round($minr * sin($alpha));
     echo "<line stroke=\"rgb(";
-    if($i != 7){
+    if($i != 7 && $i != 11){
         echo "255,255,255";
     }else{
         echo "255,0,0";
@@ -111,7 +133,7 @@ for ($i = 7; $i <= 11; ++$i) {
 <text x="300"
       y="-110"
       font-size="100" 
-      fill="white"
+      fill="red"
       font-family="Helvetica, sans-serif">
     F
 </text>
@@ -132,13 +154,13 @@ for ($i = 7; $i <= 11; ++$i) {
 </text>
 
 <?php
-// draw needle (E:210 -- F:330)
+// draw and animate needle (E:210 -- F:330)
 echo "<g><animateTransform 
 attributeName=\"transform\" 
 attributeType=\"XML\" 
 type=\"rotate\" 
 from=\"210\" 
-to=\"245\" 
+to=\"{$needlePos}\" 
 dur=\"1s\" 
 repeatCount=\"0\" 
 additive=\"replace\" 
