@@ -79,10 +79,10 @@ viewBox="0 0 1000 415"
 preserveAspectRatio="none" 
 xmlns="http://www.w3.org/2000/svg" 
 version="1.1"
-xml:lang="de" tooltip="enable">
+xml:lang="de">
   <title>lake-level-meter</title>
   <rect fill="black" x="0" y="0" 
-  width="1000" height="415" title="<?php echo $date; ?>"/>
+  width="1000" height="415"/>
 
 <?php
 // draw scale
@@ -162,7 +162,6 @@ type=\"rotate\"
 from=\"210\" 
 to=\"{$needlePos}\" 
 dur=\"1s\" 
-repeatCount=\"0\" 
 additive=\"replace\" 
 fill=\"freeze\" /> \n";
 echo "<line stroke-width=\"20\" stroke=\"rgb(255,255,255)\" x1=\"280\" y1=\"0\" 
