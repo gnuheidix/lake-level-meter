@@ -134,23 +134,22 @@ for ($i = 7; $i <= 11; ++$i) {
       y="-110"
       font-size="100" 
       fill="red"
-      font-family="Helvetica, sans-serif">
+      font-family="sans-serif">
     F
 </text>
-<text x="-350"
+<text x="-365"
       y="-110"
       font-size="100" 
       fill="red"
-      font-family="Helvetica, sans-serif">
+      font-family="sans-serif">
     E
 </text>
 <text text-anchor="middle" 
-      dominant-baseline="mathematical"
       y="-110"
       font-size="100" 
       fill="white"
-      font-family="Helvetica, sans-serif">
-    <?php echo $level." m"; ?>
+      font-family="sans-serif">
+    <?php echo str_replace(".", ",", ($level / 100))." m"; ?>
 </text>
 
 <?php
