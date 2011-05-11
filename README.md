@@ -4,6 +4,6 @@ The script generates a SVG picture which displays the current water level like a
 
 Preview: (2011-05-10) -- Run the script on your machine in order to get the current water level. :-)
 
-<img src="https://github.com/downloads/gnuheidix/lake-level-meter/preview_20110510.svg" alt="Preview"/>
+<img src="https://github.com/downloads/gnuheidix/lake-level-meter/preview_20110511.svg" alt="Preview"/>
 
 If you are using a rotten browser, you won't be able to see the preview image. This script has been tested with Firefox 4 and Chromium 11.
