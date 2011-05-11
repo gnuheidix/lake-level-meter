@@ -6,4 +6,4 @@ Preview: (2011-05-10) -- Run the script on your machine in order to get the curr
 
 <img src="https://github.com/downloads/gnuheidix/lake-level-meter/preview_20110510.svg" alt="Preview"/>
 
-If you are using a rotten browser, you won't be able to see the preview image. This script has been tested with Firefox 4.
+If you are using a rotten browser, you won't be able to see the preview image. This script has been tested with Firefox 4 and Chromium 11.
