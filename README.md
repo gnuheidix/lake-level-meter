@@ -7,3 +7,7 @@ Preview: (2011-05-11) -- Run the script on your machine in order to get the curr
 <a href="https://github.com/downloads/gnuheidix/lake-level-meter/preview_20110511.svg">Preview</a>
 
 If you are using a rotten browser, you won't be able to see the preview image. This script has been tested with Firefox 4, Chromium 11 and Opera 11.1.
+
+In case you don't want to use a webserver, you can generate the SVG by executing the following command.
+
+php levelmeter.php > levelmeter.svg
