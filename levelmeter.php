@@ -153,16 +153,8 @@ for ($i = 7; $i <= 11; ++$i) {
 </text>
 
 <?php
-// draw and animate needle (E:210 -- F:330)
-echo "<g><animateTransform 
-attributeName=\"transform\" 
-attributeType=\"XML\" 
-type=\"rotate\" 
-from=\"210\" 
-to=\"{$needlePos}\" 
-dur=\"1s\" 
-additive=\"replace\" 
-fill=\"freeze\" /> \n";
+// draw needle (E:210 -- F:330)
+echo "<g transform=\"rotate({$needlePos})\">";
 echo "<line stroke-width=\"20\" stroke=\"rgb(255,255,255)\" x1=\"280\" y1=\"0\" 
 x2=\"420\" y2=\"0\" /> \n";
 echo  "</g> \n\n"
