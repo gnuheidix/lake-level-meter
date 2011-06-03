@@ -1,7 +1,7 @@
 <?php
 /*
  * a simple water level meter for the lake constance
- * 
+ *
  * made by Thomas Heidrich - May 2011
  * updated June 2011
  *
@@ -44,7 +44,7 @@ $xpath = new DOMXPath($doc);
 $level = floatval(str_replace(",", ".", xpathQuery($xpath, $queryLevel)));
 $mnw = floatval(str_replace(",", ".", xpathQuery($xpath, $queryMNW)));
 $mw = floatval(str_replace(",", ".", xpathQuery($xpath, $queryMW)));
-$date = "Stand vom: ".xpathQuery($xpath, $queryTime);
+$date = xpathQuery($xpath, $queryTime);
 
 /* calculate needle position
  * needle: min. 210 -- mid. 270 -- max. 330
@@ -74,12 +74,11 @@ echo "<?xml version=\"1.0\" encoding=\"iso-8859-1\" ?> \n";
 ?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="<?php echo $width; ?>px" height="<?php echo $width/2.4; ?>px" viewBox="0 0 1000 415" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" version="1.1" xml:lang="de">
- <title>lake-level-meter</title>
  <rect fill="black" x="0" y="0" width="1000" height="415"/>
 <?php
 // draw scale
 echo  ' <g transform="translate(500,500)" stroke-width="10">'."\n"
-     ."  <title>{$date}</title>\n";
+     .'<text text-anchor="end" x="495" y="-470" font-size="25" fill="white" font-family="sans-serif">'.$date.'</text>'."\n";
 
 // draw small pitch lines
 $maxr = 480;
