@@ -78,7 +78,7 @@ echo "<?xml version=\"1.0\" encoding=\"iso-8859-1\" ?> \n";
 <?php
 // draw scale
 echo  ' <g transform="translate(500,500)" stroke-width="10">'."\n"
-     .'<text text-anchor="end" x="495" y="-470" font-size="25" fill="white" font-family="sans-serif">'.$date.'</text>'."\n";
+     .'  <text text-anchor="end" x="495" y="-470" font-size="25" fill="white" font-family="sans-serif">'.$date.'</text>'."\n";
 
 // draw small pitch lines
 $maxr = 480;
