@@ -3,6 +3,7 @@
  * a simple water level meter for the lake constance
  * 
  * made by Thomas Heidrich - May 2011
+ * updated June 2011
  *
  * SVG based on the work of Dr. O. Hoffmann
  *     see http://hoffmann.bplaced.net/hilfe.php?me=svg2&in=svguhr&stil=_
@@ -71,23 +72,14 @@ if(isset($_GET['width'])) {
 header("Content-type: image/svg+xml");
 echo "<?xml version=\"1.0\" encoding=\"iso-8859-1\" ?> \n";
 ?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" 
-  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="<?php echo $width; ?>px" 
-height="<?php echo $width/2.4; ?>px" 
-viewBox="0 0 1000 415" 
-preserveAspectRatio="none" 
-xmlns="http://www.w3.org/2000/svg" 
-version="1.1"
-xml:lang="de">
-  <title>lake-level-meter</title>
-  <rect fill="black" x="0" y="0" 
-  width="1000" height="415"/>
-
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="<?php echo $width; ?>px" height="<?php echo $width/2.4; ?>px" viewBox="0 0 1000 415" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" version="1.1" xml:lang="de">
+ <title>lake-level-meter</title>
+ <rect fill="black" x="0" y="0" width="1000" height="415"/>
 <?php
 // draw scale
-echo  "<g transform=\"translate(500,500)\" stroke-width=\"10\"> \n"
-     ."<title>{$date}</title>";
+echo  ' <g transform="translate(500,500)" stroke-width="10">'."\n"
+     ."  <title>{$date}</title>\n";
 
 // draw small pitch lines
 $maxr = 480;
@@ -100,13 +92,13 @@ for ($i = 34; $i <= 56; ++$i) {
     $x2 = round($minr * cos($alpha));
     $y2 = round($minr * sin($alpha));
 
-    echo "<line stroke=\"rgb(";
+    echo '  <line stroke="rgb(';
     if($i < 37 || $i > 53){
         echo "255,0,0";
     }else{
         echo "130,255,130";
     }
-    echo ")\" x1=\"$x1\" y1=\"$y1\" x2=\"$x2\" y2=\"$y2\" /> \n";
+    echo ')" x1="'.$x1.'" y1="'.$y1.'" x2="'.$x2.'" y2="'.$y2.'" />'."\n";
 }
 
 // draw big pitch lines
@@ -119,45 +111,25 @@ for ($i = 7; $i <= 11; ++$i) {
     $y1 = round($maxr * sin($alpha));
     $x2 = round($minr * cos($alpha));
     $y2 = round($minr * sin($alpha));
-    echo "<line stroke=\"rgb(";
+    echo '  <line stroke="rgb(';
     if($i != 7 && $i != 11){
         echo "255,255,255";
     }else{
         echo "255,0,0";
     }
-    echo ")\" x1=\"$x1\" y1=\"$y1\" x2=\"$x2\" y2=\"$y2\" stroke-width=\"16\"/> \n";
+    echo ')" x1="'.$x1.'" y1="'.$y1.'" x2="'.$x2.'" y2="'.$y2.'" stroke-width="16"/>'."\n";
 }
 
 // draw text
 ?>
-<text x="300"
-      y="-110"
-      font-size="100" 
-      fill="red"
-      font-family="sans-serif">
-    F
-</text>
-<text x="-365"
-      y="-110"
-      font-size="100" 
-      fill="red"
-      font-family="sans-serif">
-    E
-</text>
-<text text-anchor="middle" 
-      y="-110"
-      font-size="100" 
-      fill="white"
-      font-family="sans-serif">
-    <?php echo str_replace(".", ",", ($level / 100))." m"; ?>
-</text>
-
+  <text x="300" y="-110" font-size="100" fill="red" font-family="sans-serif">F</text>
+  <text x="-365" y="-110" font-size="100" fill="red" font-family="sans-serif">E</text>
+  <text text-anchor="middle" y="-110" font-size="100" fill="white" font-family="sans-serif"><?php echo str_replace(".", ",", ($level / 100))." m"; ?></text>
 <?php
 // draw needle (E:210 -- F:330)
-echo "<g transform=\"rotate({$needlePos})\">";
-echo "<line stroke-width=\"20\" stroke=\"rgb(255,255,255)\" x1=\"280\" y1=\"0\" 
-x2=\"420\" y2=\"0\" /> \n";
-echo  "</g> \n\n"
-     ."</g> \n"
+echo '  <line stroke-width="20" stroke="rgb(255,255,255)" transform="rotate('.$needlePos.')" x1="280" y1="0" x2="420" y2="0">'."\n";
+echo '   <animateTransform attributeName="transform" attributeType="XML" type="rotate" from="210" to="'.$needlePos.'" dur="1s" additive="replace" fill="freeze" />'."\n";
+echo '  </line>'."\n";
+echo  " </g>\n"
      ."</svg>"
 ?>
