@@ -2,12 +2,12 @@ This little script extracts the current water level of the lake constance from t
 
 The script generates a SVG picture which displays the current water level like a fuel gauge of a car.
 
-Preview: (2011-05-11) -- Run the script on your machine in order to get the current water level. :-)
-
-<a href="https://github.com/downloads/gnuheidix/lake-level-meter/preview_20110511.svg">Preview</a>
-
-If you are using a rotten browser, you won't be able to see the preview image. This script has been tested with Firefox 3.6, 4, Chromium 11 and Opera 11.1.
+The script has been tested with Firefox 3.6, 4, Chromium 11 and Opera 11.1.
 
 In case you don't want to use a webserver, you can generate the SVG by executing the following command.
 
 php levelmeter.php > levelmeter.svg
+
+You can use the SVG Rasterizer of the batik toolkit http://xmlgraphics.apache.org/batik/tools/rasterizer.html in order to generate a PNG.
+
+java -jar <path to batik root>/batik-rasterizer.jar levelmeter.svg
