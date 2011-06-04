@@ -10,4 +10,4 @@ php levelmeter.php > levelmeter.svg
 
 You can use the SVG Rasterizer of the batik toolkit http://xmlgraphics.apache.org/batik/tools/rasterizer.html in order to generate a PNG.
 
-java -jar <path to batik root>/batik-rasterizer.jar levelmeter.svg
+java -jar batik-rasterizer.jar levelmeter.svg
