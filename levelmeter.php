@@ -107,15 +107,15 @@ echo  ' <g transform="translate(500,500)" stroke-width="10">'."\n"
      .'  <text text-anchor="end" x="495" y="-470" font-size="25" fill="white" font-family="sans-serif">'.$date.'</text>'."\n";
 
 // draw small pitch lines
-for ($i = 25; $i <= 76; ++$i) {
+for ($i = 25; $i <= 75; ++$i) {
     $color = "0,0,0";
     if($i < 28){
         $color = "255,0,0";
-    }elseif($i < 33){
+    }elseif($i < 34){
         $color = "255,255,0";
-    }elseif($i < 56){
+    }elseif($i < 57){
         $color = "130,255,130";
-    }elseif($i < 65){
+    }elseif($i < 63){
         $color = "255,255,0";
     }else{
         $color = "255,0,0";
@@ -141,8 +141,8 @@ for ($i = 5; $i <= 15; ++$i) {
     drawPitchLine((M_PI / 6.0) * $i, 420, 490, $color, 16);
 }
 
-// draw min. level from 1996-03-20 - 2.33 meters
-drawPitchLine(degToRad(getNeedlePos(233, $docMw, $docMnw)), 240, 490, "255,255,255", 5);
+// draw min. level from 1858-02-17 - 2.26 meters
+drawPitchLine(degToRad(getNeedlePos(226, $docMw, $docMnw)), 240, 490, "255,255,255", 5);
 
 // draw min. level from 1999-06-11 - 5.65 meters
 drawPitchLine(degToRad(getNeedlePos(565, $docMw, $docMnw)), 240, 490, "255,255,255", 5);
@@ -160,12 +160,12 @@ drawPitchLine(degToRad(getNeedlePos($docMw, $docMw, $docMnw)), 240, 490, "130,25
 ?>
   <text x="-130" y="-173" font-size="30" fill="rgb(130,255,130)" font-family="sans-serif">MW</text>
   <text x="149" y="-43" font-size="30" fill="yellow" font-family="sans-serif">HMO</text>
-  <text x="100" y="170" font-size="30" fill="white" font-family="sans-serif">1999</text>
-  <text x="-260" y="80" font-size="30" fill="white" font-family="sans-serif">1996</text>
+  <text x="65" y="195" font-size="30" fill="white" font-family="sans-serif">1999</text>
+  <text x="-210" y="120" font-size="30" fill="white" font-family="sans-serif">1858</text>
   <text x="-233" y="13" font-size="30" fill="yellow" font-family="sans-serif">MNW</text>
-  <text x="-400" y="380" font-size="100" fill="white" font-family="sans-serif"><?php echo str_replace(".", ",", ($docLevel / 100))." m"; ?></text>
+  <text x="-420" y="380" font-size="100" fill="white" font-family="sans-serif"><?php echo str_replace(".", ",", ($docLevel / 100))." m"; ?></text>
 <?php
-// draw needle (E:210 -- F:330)
+// draw needle
 echo '  <line stroke-width="20" stroke="rgb(255,255,255)" transform="rotate('.getNeedlePos($docLevel, $docMw, $docMnw).')" x1="280" y1="0" x2="420" y2="0">'."\n";
 echo '   <animateTransform attributeName="transform" attributeType="XML" type="rotate" from="140" to="'.getNeedlePos($docLevel, $docMw, $docMnw).'" dur="2s" additive="replace" fill="freeze" />'."\n";
 echo '  </line>'."\n";
