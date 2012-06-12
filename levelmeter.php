@@ -40,7 +40,9 @@ $queryMW = '/html/body/div/div[7]/table[3]/tr[3]/td[2]';
 
 // get the website
 $doc = new DOMDocument();
-$doc->loadHtmlFile($url);
+if(!@$doc->loadHtmlFile($url)){
+    exit;
+}
 
 // extract the data
 $xpath = new DOMXPath($doc);
