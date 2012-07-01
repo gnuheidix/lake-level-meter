@@ -38,18 +38,32 @@ $queryTime  = '/html/body/div/div[7]/table[2]/tr[3]/td[3]';
 $queryMNW = '/html/body/div/div[7]/table[3]/tr[2]/td[2]';
 $queryMW = '/html/body/div/div[7]/table[3]/tr[3]/td[2]';
 
-// get the website
+// init vars
 $doc = new DOMDocument();
-if(!@$doc->loadHtmlFile($url)){
-    exit;
-}
+$ctx = stream_context_create(
+    array(
+        'http' => array(
+            'timeout' => 4
+        )
+    )
+);
+$date = 'Fehler beim Datenabruf!';
+$docLevel = 0;
+$docMnw = 1;
+$docMw = 0;
 
-// extract the data
-$xpath = new DOMXPath($doc);
-$docLevel = floatval(str_replace(",", ".", xpathQuery($xpath, $queryLevel)));
-$docMnw = floatval(str_replace(",", ".", xpathQuery($xpath, $queryMNW)));
-$docMw = floatval(str_replace(",", ".", xpathQuery($xpath, $queryMW)));
-$date = xpathQuery($xpath, $queryTime);
+// get the website
+$content = file_get_contents($url, 0, $ctx);
+if($content
+    && @$doc->loadHtml($content)
+){
+    // extract the data
+    $xpath = new DOMXPath($doc);
+    $date = xpathQuery($xpath, $queryTime);
+    $docLevel = floatval(str_replace(",", ".", xpathQuery($xpath, $queryLevel)));
+    $docMnw = floatval(str_replace(",", ".", xpathQuery($xpath, $queryMNW)));
+    $docMw = floatval(str_replace(",", ".", xpathQuery($xpath, $queryMW)));
+}
 
 /*
 // debug test values
