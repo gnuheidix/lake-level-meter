@@ -19,27 +19,12 @@
 
 // deactivate warnings in case the source page has an invalid source code
 ini_set('display_errors', 0);
-
-/**
-  * queries the xpath of a DOMDocument by using DOMXPath - only for single items
-  * @param $xpath a DOMXPath instance
-  * @param $query a xpath query string
-  * @returns the result of the query as string -- "" in case the query fails
-**/
-function xpathQuery($xpath, $query){
-    $entry = $xpath->query($query);
-    return $entry->length == 1 ? $entry->item(0)->nodeValue : "";
-}
+setlocale(LC_TIME, "de_DE.utf8");
 
 // constants for the queries
-$url   = 'http://www.pegelonline.wsv.de/gast/stammdaten?pegelnr=0906';
-$queryLevel = '/html/body/div/div[7]/table[2]/tr[3]/td[2]';
-$queryTime  = '/html/body/div/div[7]/table[2]/tr[3]/td[3]';
-$queryMNW = '/html/body/div/div[7]/table[3]/tr[2]/td[2]';
-$queryMW = '/html/body/div/div[7]/table[3]/tr[3]/td[2]';
+$url   = 'http://www.pegelonline.wsv.de/webservices/rest-api/v2/stations/KONSTANZ/W.json?includeCurrentMeasurement=true';
 
 // init vars
-$doc = new DOMDocument();
 $ctx = stream_context_create(
     array(
         'http' => array(
@@ -49,27 +34,24 @@ $ctx = stream_context_create(
 );
 $date = 'Fehler beim Datenabruf!';
 $docLevel = 0;
-$docMnw = 1;
-$docMw = 0;
 
 // get the website
 $content = file_get_contents($url, 0, $ctx);
-if($content
-    && @$doc->loadHtml($content)
-){
-    // extract the data
-    $xpath = new DOMXPath($doc);
-    $date = xpathQuery($xpath, $queryTime);
-    $docLevel = floatval(str_replace(",", ".", xpathQuery($xpath, $queryLevel)));
-    $docMnw = floatval(str_replace(",", ".", xpathQuery($xpath, $queryMNW)));
-    $docMw = floatval(str_replace(",", ".", xpathQuery($xpath, $queryMW)));
+if($content){
+    $restData = json_decode($content, true);
+    if(!empty($restData['currentMeasurement']['value']) && !empty($restData['currentMeasurement']['timestamp'])){
+        $docLevel = $restData['currentMeasurement']['value'];
+        $date = strftime('%d.%m.%Y %R %Z', strtotime($restData['currentMeasurement']['timestamp']));
+    }
 }
 
 /*
 // debug test values
-$docLevel = 480.10;
-$docMnw = 262.00;
-$docMw = 341.00;
+$docLevel = 391.5;
+*/
+$docMnw = 262;
+$docMw = 341;
+/*
 $date = "Debugmode";
 */
 /* calculate needle position
