@@ -23,7 +23,7 @@ define('YELLOW', '255,255,0');
 define('GREEN', '130,255,130');
 define('BLACK', '0,0,0');
 define('WHITE', '255,255,255');
-define('SVG_WIDTH', 400);
+define('SVG_WIDTH', '400px');
 define('MNW', 262);
 define('MW', 341);
 define('WATER_ERROR_LEVEL', -1);
@@ -259,7 +259,7 @@ function renderSVG($waterLevel, $dateText){
     $retval = <<<END
 <?xml version="1.0" encoding="iso-8859-1" ?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="$svgWidth px" height="$svgWidth px" viewBox="0 0 1000 1000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" version="1.1" xml:lang="de">
+<svg width="$svgWidth" height="$svgWidth" viewBox="0 0 1000 1000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" version="1.1" xml:lang="de">
  <rect fill="rgb($blackColor)" x="0" y="0" width="1000" height="1000"/>
  <g transform="translate(500,500)" stroke-width="10">
 $smallPitchLines$bigPitchLines$historicalMinLevel$historicalMaxLevel$hmoLevel$mnwLevel$mwLevel$needle
@@ -270,7 +270,7 @@ $smallPitchLines$bigPitchLines$historicalMinLevel$historicalMaxLevel$hmoLevel$mn
   <text x="-210" y="120" font-size="30" fill="rgb($whiteColor)" font-family="sans-serif">1858</text>
   <text x="-233" y="13" font-size="30" fill="rgb($yellowColor)" font-family="sans-serif">MNW</text>
   <text x="-420" y="380" font-size="100" fill="rgb($whiteColor)" font-family="sans-serif">$waterLevelInMeters</text>
-  </g>
+ </g>
 </svg>
 END;
     
