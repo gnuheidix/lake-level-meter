@@ -10,9 +10,6 @@
  *     see http://hoffmann.bplaced.net/hilfe.php?me=svg2&in=svguhr&stil=_
  *
  * Usage: Simply run the script and hope that pegelonline.wsv.de is online. ;-)
- * Param: The parameter width can be set in order to manipulate the size of the
- *        water level meter
- * Example: http://localhost/levelmeter.php?width=200
  *
  * License: CC-BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/de/
  *
